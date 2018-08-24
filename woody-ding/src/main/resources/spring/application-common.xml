@@ -15,14 +15,6 @@
     <!-- 如果要自动扫描Annotation -->
     <context:annotation-config/>
 
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:/config/db.properties</value>
-            </list>
-        </property>
-    </bean>
-
     <!-- myBatis SqlSessionFactory-->
     <bean id="lazySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
