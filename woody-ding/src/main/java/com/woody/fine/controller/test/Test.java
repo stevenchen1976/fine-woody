@@ -1,6 +1,7 @@
 package com.woody.fine.controller.test;
 
 import com.woody.fine.service.test.TestService;
+import com.woody.framework.utils.ConfigUitl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public class Test {
     @ResponseBody
     public void bookInfo() {
         System.out.println("Hi");
-        System.out.println("Hi");
+        System.out.println(ConfigUitl.getValue("redis.port"));
     }
 
     @RequestMapping("/bookPage")
