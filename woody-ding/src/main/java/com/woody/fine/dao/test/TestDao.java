@@ -7,4 +7,8 @@ import org.springframework.stereotype.Repository;
 public interface TestDao {
 
     String queryPriceByName(@Param("name") String name);
+
+    void createTable(@Param("tableName") String tableName);
+
+    int selectTable(@Param("tableName")String tableName);
 }

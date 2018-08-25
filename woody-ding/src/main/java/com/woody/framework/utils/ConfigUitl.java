@@ -26,4 +26,22 @@ public class ConfigUitl {
     public static String getValue(String key) {
         return configProperties.getProperty(key);
     }
+
+
+    /**
+     * redis配置
+     * @return
+     */
+    public static String getRedisHost() {
+        return configProperties.getProperty("redis.host");
+    }
+    public static Integer getRedisPort() {
+        return Integer.valueOf(configProperties.getProperty("redis.port"));
+    }
+    public static String getRedisPw() {
+        return configProperties.getProperty("redis.pass");
+    }
+    public static Integer getRedisTimeOut() {
+        return Integer.valueOf(configProperties.getProperty("redis.timeout"));
+    }
 }

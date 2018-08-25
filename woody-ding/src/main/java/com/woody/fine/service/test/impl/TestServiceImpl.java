@@ -16,4 +16,24 @@ public class TestServiceImpl implements TestService {
     public String queryBookpriceByName(String name) {
         return tDao.queryPriceByName(name);
     }
+
+    @Override
+    public String createTable(String tableName) {
+
+        int count = 0;
+        try {
+           count = tDao.selectTable(tableName);
+        } catch (Exception e) {
+            tDao.createTable(tableName);
+        }
+
+
+//        try {
+//            tDao.createTable(tableName);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "fault";
+//        }
+        return "success";
+    }
 }

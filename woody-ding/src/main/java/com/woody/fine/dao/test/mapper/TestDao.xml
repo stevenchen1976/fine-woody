@@ -5,7 +5,21 @@
 
 <mapper namespace="com.woody.fine.dao.test.TestDao">
 
+    <update id="createTable">
+        CREATE TABLE `${tableName}` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `DataAA` varchar(20) DEFAULT NULL,
+          `DataBB` varchar(20) DEFAULT NULL,
+          `DataCC` varchar(20) DEFAULT NULL,
+          PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+    </update>
+
     <select id="queryPriceByName" resultType="java.lang.String">
         select price from book where name = #{name}
+    </select>
+
+    <select id="selectTable" resultType="java.lang.Integer">
+        select count(1) from `${tableName}`
     </select>
 </mapper>
