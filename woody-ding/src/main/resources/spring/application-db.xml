@@ -13,6 +13,7 @@
         <property name="locations">
             <list>
                 <value>classpath:/config/db.properties</value>
+                <value>classpath:/config/config.properties</value>
             </list>
         </property>
     </bean>

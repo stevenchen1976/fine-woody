@@ -7,5 +7,5 @@
     <import resource="classpath:/spring/application-common.xml"/>
     <import resource="classpath:/spring/application-db.xml" />
     <import resource="classpath:/spring/application-aop.xml" />
-
+    <import resource="classpath:/spring/redis-context.xml" />
 </beans>

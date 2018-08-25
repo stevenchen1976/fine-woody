@@ -1,10 +1,12 @@
 package com.woody.fine.controller.test;
 
 import com.woody.fine.service.test.TestService;
+import com.woody.framework.redis.ObjectRedisTemplate;
 import com.woody.framework.redis.RedisManager;
 import com.woody.framework.utils.ConfigUitl;
 import org.redisson.client.RedisClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +19,9 @@ public class Test {
 
     @Autowired
     private TestService bookService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @RequestMapping("/book")
     @ResponseBody
@@ -52,7 +57,10 @@ public class Test {
         Jedis jedis = RedisManager.getJedisPool();
         jedis.set("test","20180825");
 
-        return jedis.get("test");
+        stringRedisTemplate.opsForValue().set("123","456");
+        String test = stringRedisTemplate.opsForValue().get("123");
+
+        return jedis.get("test") + "__1_2__" + test;
     }
 
     //创建数据库表
