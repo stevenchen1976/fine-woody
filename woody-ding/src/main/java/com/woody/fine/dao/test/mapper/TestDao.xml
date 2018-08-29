@@ -4,6 +4,12 @@
         "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 
 <mapper namespace="com.woody.fine.dao.test.TestDao">
+    <insert id="insertTestData">
+        insert into dataTest
+        (data, createtime)
+        values
+        (#{data}, NOW())
+    </insert>
 
     <update id="createTable">
         CREATE TABLE `${tableName}` (
@@ -21,5 +27,8 @@
 
     <select id="selectTable" resultType="java.lang.Integer">
         select count(1) from `${tableName}`
+    </select>
+    <select id="selectAllDataInfo" resultType="com.woody.fine.vo.DataTestVo">
+        select id, data, createtime from dataTest
     </select>
 </mapper>

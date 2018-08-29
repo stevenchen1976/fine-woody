@@ -17,7 +17,7 @@
 
     <!-- myBatis SqlSessionFactory-->
     <bean id="lazySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
+        <property name="dataSource" ref="multipleDataSource"/>
         <!--<property name="configLocation" value="classpath:myBatis-config.xml"></property>-->
         <property name="mapperLocations" value="classpath*:com/woody/fine/dao/**/**.xml"/>
     </bean>
@@ -30,7 +30,7 @@
 
     <!-- 配置spring-jdbcTemplate模板  -->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="dataSource"></property>
+        <property name="dataSource" ref="multipleDataSource"></property>
     </bean>
 
 

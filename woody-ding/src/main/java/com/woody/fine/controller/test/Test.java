@@ -1,6 +1,7 @@
 package com.woody.fine.controller.test;
 
 import com.woody.fine.service.test.TestService;
+import com.woody.fine.vo.DataTestVo;
 import com.woody.framework.file.FileDownloadUtil;
 import com.woody.framework.redis.ObjectRedisTemplate;
 import com.woody.framework.redis.RedisManager;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Controller
 @RequestMapping("/test")
@@ -82,5 +84,32 @@ public class Test {
 
         FileDownloadUtil.localFileDownload(response,localFilePath);
 
+    }
+
+
+    /**
+     * 动态数据源
+     * @param data
+     * @return
+     */
+    @RequestMapping("/dynamicDatabse")
+    @ResponseBody
+    public String dynamicDatabase(@RequestParam("data") String data) {
+
+        String result = bookService.insertTestData(data);
+
+        return result;
+    }
+
+
+    /**
+     * 获取所有数据
+     * @return
+     */
+    @RequestMapping("/dynamicDatabseAllInfo")
+    @ResponseBody
+    public List<DataTestVo> dynamicDatabseAllInfo() {
+       List<DataTestVo> result = bookService.selectAllTestData();
+        return result;
     }
 }
