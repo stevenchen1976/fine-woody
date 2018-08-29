@@ -44,4 +44,9 @@ public class ConfigUitl {
     public static Integer getRedisTimeOut() {
         return Integer.valueOf(configProperties.getProperty("redis.timeout"));
     }
+
+    public static String getUploadDir() {
+
+        return configProperties.getProperty("upload.dir");
+    }
 }

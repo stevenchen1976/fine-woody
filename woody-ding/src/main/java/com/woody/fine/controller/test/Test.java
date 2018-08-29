@@ -1,6 +1,7 @@
 package com.woody.fine.controller.test;
 
 import com.woody.fine.service.test.TestService;
+import com.woody.framework.file.FileDownloadUtil;
 import com.woody.framework.redis.ObjectRedisTemplate;
 import com.woody.framework.redis.RedisManager;
 import com.woody.framework.utils.ConfigUitl;
@@ -9,9 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/test")
@@ -70,5 +74,13 @@ public class Test {
         String result = bookService.createTable(tableName);
 
         return result;
+    }
+
+    //http://localhost:8080/woody-ding/test/localFile?localFile=files_9c02a12b-d5f6-4d7a-8ad3-027a1d1ae161_2018-08-23_16-19-12.jpg
+    @RequestMapping("/localFile")
+    public void downLocalFile(HttpServletResponse response, @RequestParam("localFile") String localFilePath) {
+
+        FileDownloadUtil.localFileDownload(response,localFilePath);
+
     }
 }
