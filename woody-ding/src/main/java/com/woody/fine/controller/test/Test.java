@@ -3,10 +3,8 @@ package com.woody.fine.controller.test;
 import com.woody.fine.service.test.TestService;
 import com.woody.fine.vo.DataTestVo;
 import com.woody.framework.file.FileDownloadUtil;
-import com.woody.framework.redis.ObjectRedisTemplate;
 import com.woody.framework.redis.RedisManager;
 import com.woody.framework.utils.ConfigUitl;
-import org.redisson.client.RedisClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -61,9 +59,9 @@ public class Test {
     public String redisTest() throws Exception {
 
         Jedis jedis = RedisManager.getJedisPool();
-        jedis.set("test","20180825");
+        jedis.set("test", "20180825");
 
-        stringRedisTemplate.opsForValue().set("123","456");
+        stringRedisTemplate.opsForValue().set("123", "456");
         String test = stringRedisTemplate.opsForValue().get("123");
 
         return jedis.get("test") + "__1_2__" + test;
@@ -72,7 +70,7 @@ public class Test {
     //创建数据库表
     @RequestMapping("/table")
     @ResponseBody
-    public String  createDataTable(String tableName) {
+    public String createDataTable(String tableName) {
         String result = bookService.createTable(tableName);
 
         return result;
@@ -82,13 +80,14 @@ public class Test {
     @RequestMapping("/localFile")
     public void downLocalFile(HttpServletResponse response, @RequestParam("localFile") String localFilePath) {
 
-        FileDownloadUtil.localFileDownload(response,localFilePath);
+        FileDownloadUtil.localFileDownload(response, localFilePath);
 
     }
 
 
     /**
      * 动态数据源
+     *
      * @param data
      * @return
      */
@@ -104,12 +103,13 @@ public class Test {
 
     /**
      * 获取所有数据
+     *
      * @return
      */
     @RequestMapping("/dynamicDatabseAllInfo")
     @ResponseBody
     public List<DataTestVo> dynamicDatabseAllInfo() {
-       List<DataTestVo> result = bookService.selectAllTestData();
+        List<DataTestVo> result = bookService.selectAllTestData();
         return result;
     }
 }
