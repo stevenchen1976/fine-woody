@@ -6,19 +6,19 @@ import java.lang.reflect.Proxy;
 
 public class JdkProxy implements InvocationHandler {
 
-    private JdkSon target;
+    private Object target;
 
-    public  Object getInstance(JdkSon target) {
+    public  Object getInstance(Object target) {
         this.target = target;
-        Class<? extends JdkSon> clazz = target.getClass();
+        Class clazz = target.getClass();
         return Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), this);
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         System.out.println("jdkProxy before....");
-        method.invoke(this.target, args);
+        Object result = method.invoke(this.target, args);
         System.out.println("jdkProxy after");
-        return null;
+        return result;
     }
 }
