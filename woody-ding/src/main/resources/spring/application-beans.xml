@@ -11,4 +11,35 @@
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
 
+    <bean id="persom" class="com.woody.framework.reflect.Persom">
+        <constructor-arg name="age" value="12" index="1" />
+        <constructor-arg name="sex" value="1" index="2"/>
+        <constructor-arg name="name" value="章三" index="0"/>
+    </bean>
+
+    <bean id="personFactoryBean" class="com.woody.framework.spring.factorybean.PersonFactoryBeanTest">
+        <property name="persom" ref="persom" />
+    </bean>
+
+    <bean id = "mailSender" class="com.woody.framework.spring.event.MailSender"/>
+
+    <!--被代理对象-->
+    <bean id="math" class="com.woody.framework.spring.aop.AOPMath"/>
+
+    <!--通知-->
+    <bean id="advices" class="com.woody.framework.spring.aop.Advices"/>
+
+    <!-- aop配置 -->
+    <aop:config proxy-target-class="true">
+        <!--切面 -->
+        <aop:aspect ref="advices">
+            <!-- 切点 -->
+            <aop:pointcut expression="execution(* com.woody.framework.spring.aop.AOPMath.*(..))" id="pointcut1"/>
+            <!--连接通知方法与切点 -->
+            <aop:before method="before" pointcut-ref="pointcut1"/>
+            <aop:after method="after" pointcut-ref="pointcut1"/>
+        </aop:aspect>
+    </aop:config>
+
+
 </beans>
