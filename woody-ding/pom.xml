@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-framework-bom.version>4.3.18.RELEASE</spring-framework-bom.version>
         <spring-security.version>4.2.7.RELEASE</spring-security.version>
-        <nettyversion>4.1.12.Final</nettyversion>
+        <nettyversion>4.1.6.Final</nettyversion>
         <quartz.version>2.2.1</quartz.version>
         <eldf.version>0.0.1-SNAPSHOT</eldf.version>
         <iacs.version>1.0.0-SNAPSHOT</iacs.version>
