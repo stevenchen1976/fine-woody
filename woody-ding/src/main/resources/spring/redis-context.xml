@@ -1,33 +1,26 @@
-<beans	 xmlns="http://www.springframework.org/schema/beans"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:p="http://www.springframework.org/schema/p"
-           xmlns:tx="http://www.springframework.org/schema/tx"
-           xmlns:context="http://www.springframework.org/schema/context"
-           xsi:schemaLocation="
-      http://www.springframework.org/schema/beans
-      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-      http://www.springframework.org/schema/tx
-      http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-      http://www.springframework.org/schema/context
-      http://www.springframework.org/schema/context/spring-context-4.0.xsd ">
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
     <!--<context:property-placeholder location="classpath:/config/config.properties"  ignore-unresolvable="true"/>-->
 
     <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <!-- 最大空闲连接数 -->
-        <property name="maxIdle" value="${redis.maxIdle}" />
+        <property name="maxIdle" value="${redis.maxIdle}"/>
         <!-- 初始化连接数 -->
         <property name="minIdle" value="${redis.minIdle}"/>
         <!-- 最大链接数 -->
         <!--<property name="maxActive" value="${redis.maxActive}" />-->
-        <property name="maxTotal" value="${redis.maxActive}" />
+        <property name="maxTotal" value="${redis.maxActive}"/>
         <!--最大等待时间-->
         <!--<property name="maxWait" value="${redis.maxWait}" />-->
-        <property name="MaxWaitMillis" value="${redis.maxWait}" />
+        <property name="MaxWaitMillis" value="${redis.maxWait}"/>
         <!--对拿到的connection进行validateObject校验-->
-        <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
         <!--定时对线程池中空闲的链接进行validateObject校验-->
-        <property name="testWhileIdle" value="true" />
+        <property name="testWhileIdle" value="true"/>
     </bean>
 
     <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
@@ -39,12 +32,12 @@
           p:pool-config-ref="poolConfig"/>
 
     <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
-        <property name="connectionFactory"   ref="connectionFactory" />
+        <property name="connectionFactory" ref="connectionFactory"/>
     </bean>
 
 
     <bean id="objectRedisTemplate" class="com.woody.framework.redis.ObjectRedisTemplate">
-        <property name="connectionFactory"  ref="connectionFactory" />
+        <property name="connectionFactory" ref="connectionFactory"/>
     </bean>
 
 </beans>
