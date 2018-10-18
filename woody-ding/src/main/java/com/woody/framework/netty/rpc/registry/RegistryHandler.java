@@ -54,6 +54,7 @@ public class RegistryHandler extends ChannelInboundHandlerAdapter {
     //IOC容器（大概）
     //扫描所有Class
     private void scannerClass(String packageName) {
+        //完整路径
         URL url = this.getClass().getClassLoader().getResource(packageName.replaceAll("\\.", "/"));
         File dir = new File(url.getFile());
         for (File file : dir.listFiles()) {
@@ -61,6 +62,7 @@ public class RegistryHandler extends ChannelInboundHandlerAdapter {
             if (file.isDirectory()) {
                 scannerClass(packageName + "." + file.getName());
             } else {
+                // private List<String> classCache = new ArrayList<String>();
                 classCache.add(packageName + "." + file.getName().replace(".class", "").trim());
             }
         }
