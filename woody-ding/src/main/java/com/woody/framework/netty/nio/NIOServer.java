@@ -1,7 +1,5 @@
 package com.woody.framework.netty.nio;
 
-import com.sun.xml.internal.bind.v2.TODO;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -11,21 +9,16 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class NIOServer  {
+public class NIOServer {
 
-    private Integer port;
-    private Selector selector = null;
-
-    //用来记录在线人数，以及昵称
-    private Set<String> users = new HashSet<>();
     private static String USER_EXITS = "系统提示：该昵称已存在，请重新换个昵称！";
     //相当于自定义协议格式，与客户端协商好
     private static String USER_CONTENT_SPILT = "#@#";
+    private Integer port;
+    private Selector selector = null;
+    //用来记录在线人数，以及昵称
+    private Set<String> users = new HashSet<>();
     private Charset charset = Charset.forName("UTF-8");
-
-    public static void main(String[] args) throws IOException {
-        new NIOServer(8081).listener();
-    }
 
     public NIOServer(Integer port) throws IOException {
 
@@ -53,6 +46,10 @@ public class NIOServer  {
         System.out.println("Hi, 服务已启动，监听的端口是" + port);
     }
 
+    public static void main(String[] args) throws IOException {
+        new NIOServer(8081).listener();
+    }
+
     //从 Selector 中获取感兴趣的事件，即开始监听，进入内部循环:
     public void listener() throws IOException {
         try {
@@ -60,14 +57,14 @@ public class NIOServer  {
             while (true) {
                 //在轮询，服务大厅中有多少人排队
                 int wait = selector.select();
-                if(wait == 0) { //如果没有人排队，则进入下一次轮询
+                if (wait == 0) { //如果没有人排队，则进入下一次轮询
                     continue;
                 }
                 //获取发生事件的SelectionKey（获取可用通道的集合）
                 Set<SelectionKey> selectionKeys = selector.selectedKeys();
                 Iterator<SelectionKey> it = selectionKeys.iterator();
                 while (it.hasNext()) {
-                    SelectionKey key = (SelectionKey)it.next();
+                    SelectionKey key = (SelectionKey) it.next();
                     it.remove();
                     //根据不同的事件处理
                     process(key);
@@ -83,8 +80,8 @@ public class NIOServer  {
     public void process(SelectionKey key) throws IOException {
         //判断客户端确定已经进入服务大厅并且已经可以实现交互了
         //接收请求
-        if(key.isAcceptable()) {
-            ServerSocketChannel server = (ServerSocketChannel)key.channel();
+        if (key.isAcceptable()) {
+            ServerSocketChannel server = (ServerSocketChannel) key.channel();
             SocketChannel client = server.accept();
 //            client.getRemoteAddress();
             //非阻塞模式
@@ -99,7 +96,7 @@ public class NIOServer  {
             client.write(charset.encode("请输入你的昵称："));
         }
         //处理来自客户端的数据读取请求
-        else if(key.isReadable()) {
+        if (key.isReadable()) {
             //返回该SelectionKey对应的Channel，其中有数据读取
             SocketChannel client = (SocketChannel) key.channel();
             ByteBuffer buffer = ByteBuffer.allocate(1024);
@@ -115,17 +112,17 @@ public class NIOServer  {
                 key.interestOps(SelectionKey.OP_READ);
             } catch (Exception e) {
                 key.cancel();
-                if(key.channel() != null) {
+                if (key.channel() != null) {
                     key.channel().close();
                 }
             }
 
-            if(content.length() > 0) {
+            if (content.length() > 0) {
                 String[] arrayContent = content.toString().split(USER_CONTENT_SPILT);
                 //注册用户
-                if(arrayContent!= null && arrayContent.length == 1) {
+                if (arrayContent != null && arrayContent.length == 1) {
                     String nickname = arrayContent[0];
-                    if(users.contains(nickname)) {
+                    if (users.contains(nickname)) {
                         client.write(charset.encode(USER_EXITS));
                     } else {
                         users.add(nickname);
@@ -135,11 +132,11 @@ public class NIOServer  {
                     }
                 }
                 //注册完了，发送消息
-                else if(arrayContent != null && arrayContent.length > 1){
+                else if (arrayContent != null && arrayContent.length > 1) {
                     String nickname = arrayContent[0];
                     String message = content.substring(nickname.length() + USER_CONTENT_SPILT.length());
                     message = nickname + "说" + message;
-                    if(users.contains(nickname)) {
+                    if (users.contains(nickname)) {
                         broadcast(client, message);
                     }
                 }
@@ -150,10 +147,10 @@ public class NIOServer  {
     //TODO 要是能检测下线，就不用这么统计了
     public int onlineCount() {
         int oncount = 0;
-        for(SelectionKey key : selector.keys()) {
+        for (SelectionKey key : selector.keys()) {
             Channel target = key.channel();
-            if(target instanceof SocketChannel) {
-                oncount ++;
+            if (target instanceof SocketChannel) {
+                oncount++;
             }
         }
         return oncount;
@@ -161,11 +158,11 @@ public class NIOServer  {
 
     public void broadcast(SocketChannel client, String message) throws IOException {
         //广播数据到所有的SocketChannel中
-        for(SelectionKey key : selector.keys()) {
+        for (SelectionKey key : selector.keys()) {
             SelectableChannel targetChannel = key.channel();
             //不回发给发送此内容的客户端
-            if(targetChannel instanceof SocketChannel && targetChannel != client) {
-                SocketChannel target = (SocketChannel)targetChannel;
+            if (targetChannel instanceof SocketChannel && targetChannel != client) {
+                SocketChannel target = (SocketChannel) targetChannel;
                 target.write(charset.encode(message));
             }
         }
