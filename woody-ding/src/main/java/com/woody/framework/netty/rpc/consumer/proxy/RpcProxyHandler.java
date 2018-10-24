@@ -19,6 +19,7 @@ public class RpcProxyHandler extends ChannelInboundHandlerAdapter {
         
     @Override    
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        System.out.println("client exception is general");    
+        System.out.println("client exception is general");
+        ctx.close();
     }    
 } 
