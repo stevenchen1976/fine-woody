@@ -63,28 +63,35 @@ class MethodProxy implements InvocationHandler {
 	      msg.setValues(args);  
 	      msg.setParames(method.getParameterTypes());  
 	  	
-	      final RpcProxyHandler consumerHandler = new RpcProxyHandler();  
+	      final RpcProxyHandler consumerHandler = new RpcProxyHandler();
+	      //（指定NIO类型，处理客户端事件）
+		// 为进行事件处理分配了一个 NioEventLoopGroup 实例，
+		// 其中事件处理包括创建新的 连接以及处理入站和出站数据
 	      EventLoopGroup group = new NioEventLoopGroup();
-	      try {    
+	      try {
+			  //为初始化客户端，创建了一个 Bootstrap 实例
 	          Bootstrap b = new Bootstrap();
 	          b.group(group)    
 	           .channel(NioSocketChannel.class)
 	           .option(ChannelOption.TCP_NODELAY, true)
+			   //创建Channel时，向ChannelPipeline中添加一个RpcProxyHandler实例
 	           .handler(new ChannelInitializer<SocketChannel>() {
 	               @Override    
 	               public void initChannel(SocketChannel ch) throws Exception {
-	                   ChannelPipeline pipeline = ch.pipeline();
+					   ChannelPipeline pipeline = ch.pipeline();
 	                   pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
 	                   pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
 	                   pipeline.addLast("encoder", new ObjectEncoder());
 	                   pipeline.addLast("decoder", new ObjectDecoder(Integer.MAX_VALUE, ClassResolvers.cacheDisabled(null)));
+					   //当连接被建立时，一个 consumerHandler 实例会被安装到(该 Channel 的)ChannelPipeline 中
 	                   pipeline.addLast("handler",consumerHandler);  
 	               }
 	           });    
 	  
-	          
+	          //连接到远程节点，阻塞等待直到连接完成
 	          ChannelFuture future = b.connect("localhost", 8080).sync();
-	          future.channel().writeAndFlush(msg).sync();  
+	          future.channel().writeAndFlush(msg).sync();
+	          //阻塞，直到Channel关闭
 	          future.channel().closeFuture().sync();    
 	      } catch(Exception e){
 	      	e.printStackTrace();

@@ -16,7 +16,8 @@ public class RpcRegistry {
     public RpcRegistry(int port){  
         this.port = port;  
     }  
-    public void start(){  
+    public void start(){
+        //NioEventLoopGroup 实例以进行事件的处理，如接受新连接以及读写数据
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
           
@@ -24,6 +25,10 @@ public class RpcRegistry {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
             		.channel(NioServerSocketChannel.class)
+                    //使用一个 RegistryHandler 的实例初始化每一个新的 Channel
+                    //当一个新的连接被接受时，一个新的子 Channel 将会被创建，而 ChannelInitializer 将会把一个RegistryHandler 的实例
+                    // 添加到该 Channel 的 ChannelPipeline 中
+                    //这个 ChannelHandler 将会收到有关入站消息的通知
                     .childHandler(new ChannelInitializer<SocketChannel>() {
   
                         @Override  
@@ -43,8 +48,10 @@ public class RpcRegistry {
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
+            //异步地绑定服务器，调用sync()方法阻塞等待直到绑定完成
             ChannelFuture future = b.bind(port).sync();
-            System.out.println("RPC Registry start listen at " + port );    
+            System.out.println("RPC Registry start listen at " + port );
+            //获取Channel的CloseFuture，并 且阻塞当前线程直到它完成
             future.channel().closeFuture().sync();    
         } catch (Exception e) {  
              bossGroup.shutdownGracefully();    

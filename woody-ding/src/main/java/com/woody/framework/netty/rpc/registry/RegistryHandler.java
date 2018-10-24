@@ -28,6 +28,7 @@ public class RegistryHandler extends ChannelInboundHandlerAdapter {
     }
 
 
+    //当接收到消息时被调用
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         Object result = new Object();
