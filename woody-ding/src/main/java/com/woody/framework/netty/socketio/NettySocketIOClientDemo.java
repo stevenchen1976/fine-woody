@@ -19,6 +19,7 @@ public class NettySocketIOClientDemo {
 
         //连接服务端
         Socket socket = IO.socket("http://127.0.0.1:8091?token=1323sdfsfsdsdfsaf13");
+//        Socket socket = IO.socket("http://127.0.0.1:8091?/chat1?token=1323sdfsfsdsdfsaf13");
 
         //监听消息
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {

@@ -41,6 +41,15 @@ public class NettySocketIOServerDemo {
             }
         });
 
+//        final SocketIONamespace chat1namespace = server.addNamespace("/chat1");
+//        chat1namespace.addEventListener("message", String.class, new DataListener<String>() {
+//            @Override
+//            public void onData(SocketIOClient client, String data, AckRequest ackRequest) {
+//                // broadcast messages to all clients
+//                chat1namespace.getBroadcastOperations().sendEvent("message", data);
+//            }
+//        });
+
         //监听事件
         server.addEventListener(io.socket.engineio.client.Socket.EVENT_MESSAGE, Object.class, new DataListener<Object>() {
             @Override
