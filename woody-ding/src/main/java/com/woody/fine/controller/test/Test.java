@@ -3,7 +3,7 @@ package com.woody.fine.controller.test;
 import com.woody.fine.service.test.TestService;
 import com.woody.fine.vo.DataTestVo;
 import com.woody.framework.file.FileDownloadUtil;
-import com.woody.framework.redis.RedisManager;
+import com.woody.framework.redis.RedisUtil;
 import com.woody.framework.utils.ConfigUitl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -58,7 +58,7 @@ public class Test {
     @ResponseBody
     public String redisTest() throws Exception {
 
-        Jedis jedis = RedisManager.getJedisPool();
+        Jedis jedis = RedisUtil.getJedisPool();
         jedis.set("test", "20180825");
 
         stringRedisTemplate.opsForValue().set("123", "456");
