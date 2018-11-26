@@ -6,6 +6,7 @@ import com.woody.framework.file.FileDownloadUtil;
 import com.woody.framework.redis.RedisUtil;
 import com.woody.framework.utils.ConfigUitl;
 import com.woody.framework.ws.cxfspring.client.HelloWebService;
+import com.woody.framework.ws.cxfspring.client.mobileInfo.MobileCodeWSSoap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -31,6 +33,9 @@ public class Test {
     @Autowired
     private HelloWebService helloWebService;
 
+    @Autowired
+    private MobileCodeWSSoap mobileInfoService;
+
     @RequestMapping("/book")
     @ResponseBody
     public String queryBookPrice(String name) {
@@ -40,9 +45,11 @@ public class Test {
 
     @RequestMapping("/info")
     @ResponseBody
-    public void bookInfo() {
+    public void bookInfo() throws UnsupportedEncodingException {
         System.out.println("Hi");
         System.out.println(helloWebService.sayHello("1111111111111111111"));
+        String mobileCodeInfo = mobileInfoService.getMobileCodeInfo("18721581173", "");
+        System.out.println("2222222222222222222222222222222" + new String(mobileCodeInfo.getBytes(), "utf-8"));
         System.out.println(ConfigUitl.getValue("redis.port"));
     }
 

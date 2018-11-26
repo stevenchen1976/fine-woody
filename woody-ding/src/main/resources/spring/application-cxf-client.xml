@@ -6,4 +6,8 @@
     <jaxws:client id="helloWebService"
                   serviceClass="com.woody.framework.ws.cxfspring.client.HelloWebService"
                   address="http://localhost:8080/woody-ding/myService/fkjava"/>
+
+    <jaxws:client id="mobileInfoService"
+                  serviceClass="com.woody.framework.ws.cxfspring.client.mobileInfo.MobileCodeWSSoap"
+                  address="http://ws.webxml.com.cn/WebServices/MobileCodeWS.asmx" />
 </beans>
