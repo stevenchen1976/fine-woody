@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+           http://cxf.apache.org/jaxws
+           http://cxf.apache.org/schemas/jaxws.xsd">
+    <!-- web应用的类加载路径有两类：
+    1.WEB-INF/classes目录。
+    2.WEB-INF/lib目录下，两者的唯一区别是前者是散的class文件，后者是打成jar包的class文件
+     -->
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+
+    <!--所有服务 http://localhost:8080/woody-ding/myService -->
+    <!-- http://localhost:8080/woody-ding/myService/fkjava?WSDL-->
+    <bean id="userService" class="com.woody.framework.ws.cxfspring.server.autowired.UserServiceImpl" />
+    <bean id="helloWorldWs" class="com.woody.framework.ws.cxfspring.server.HelloWebServiceImpl">
+        <property name="userService" ref="userService"></property>
+    </bean>
+    <jaxws:endpoint
+            implementor="#helloWorldWs"
+            address="/fkjava">
+        <!-- 如果要添加out拦截器，则使用 jaxws:outInterceptors标签定义 -->
+        <jaxws:inInterceptors>
+
+            <!--<jaxws:inInterceptors>-->
+            <!--<ref bean="loggingin"/>-->
+            <!--<ref bean="authInInterceptor"/>-->
+            <!--</jaxws:inInterceptors>-->
+            <!--<jaxws:outInterceptors>-->
+            <!--<ref bean="loggingout"/>-->
+            <!--</jaxws:outInterceptors> -->
+
+            <!--这里是临时定义的一个嵌套bean，这是cxf提供的拦截器-->
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+            <!--这里是引用容器中已有的一个bean-->
+            <!--<ref bean="anotherInterceptor"/>-->
+            <!--这里将自己的权限控制器引进来
+                extents AbstractPhaseInterceptor<SoapMessage> 空构造器 -->
+            <bean class="com.woody.framework.ws.cxfspring.server.AuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+</beans>

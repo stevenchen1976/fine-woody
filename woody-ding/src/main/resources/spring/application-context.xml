@@ -4,6 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <import resource="classpath:/spring/application-beans.xml"/>
+    <import resource="classpath:/spring/application-cxf-server.xml"/>
+    <import resource="classpath:/spring/application-cxf-client.xml"/>
     <import resource="classpath:/spring/application-common.xml"/>
     <import resource="classpath:/spring/application-db.xml" />
     <import resource="classpath:/spring/application-aop.xml" />

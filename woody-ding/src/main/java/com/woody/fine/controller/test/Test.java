@@ -5,6 +5,7 @@ import com.woody.fine.vo.DataTestVo;
 import com.woody.framework.file.FileDownloadUtil;
 import com.woody.framework.redis.RedisUtil;
 import com.woody.framework.utils.ConfigUitl;
+import com.woody.framework.ws.cxfspring.client.HelloWebService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,9 @@ public class Test {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private HelloWebService helloWebService;
+
     @RequestMapping("/book")
     @ResponseBody
     public String queryBookPrice(String name) {
@@ -38,6 +42,7 @@ public class Test {
     @ResponseBody
     public void bookInfo() {
         System.out.println("Hi");
+        System.out.println(helloWebService.sayHello("1111111111111111111"));
         System.out.println(ConfigUitl.getValue("redis.port"));
     }
 
